@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+    <title>@ViewBag.Title - eVisa Thailand</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="@Url.Content("~/Content/favicon.ico")">
+
+    <!-- Web Fonts -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+
+    @*@Styles.Render("~/Scripts/assets/css")*@
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/assets/plugins/bootstrap/css/bootstrap.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/assets/css/style.css")">
+
+    <!-- CSS Header and Footer -->
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/assets/css/headers/header-default.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/assets/css/footers/footer-v1.css")">
+
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/assets/plugins/animate.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/assets/plugins/line-icons/line-icons.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/assets/plugins/font-awesome/css/font-awesome.min.css")">
+
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css")">
+
+    <!-- CSS Customization -->
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/assets/css/custom.css")">
+
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/assets/plugins/glyphicons-pro/glyphicons/web/html_css/css/glyphicons.css")">
+    @*<link rel="stylesheet" href="@Url.Content("~/Scripts/assets/plugins/glyphicons-pro/glyphicons_halflings/web/html_css/css/halflings.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/assets/plugins/glyphicons-pro/glyphicons_social/web/html_css/css/social.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/assets/plugins/glyphicons-pro/glyphicons_filetypes/web/html_css/css/filetypes.css")">*@
+
+</head>
+
+<body data-ng-app="main">
+    <div class="wrapper">
+        <!--=== Header ===-->
+        <div class="header">
+            <div class="container">
+                <!-- Logo -->
+                @Html.Partial("_Logo")
+                <!-- End Logo -->
+
+                <!-- Topbar -->
+                @Html.Partial("_Topbar")
+                <!-- End Topbar -->
+
+                <!-- Toggle get grouped for better mobile display -->
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="fa fa-bars"></span>
+                </button>
+                <!-- End Toggle -->
+
+            </div><!--/end container-->
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
+                <div class="container">
+                    <ul class="nav navbar-nav">
+                        <li class="@Html.IsSelected(action: "Index")">@Html.ActionLink("Home", "Index", "Home")</li>
+
+                        <!-- User -->
+                        <li class="dropdown @Html.IsSelected(controller: "User")">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">User</a>
+                            <ul class="dropdown-menu">
+                                <li class="@Html.IsSelected(controller: "User", action: "Overview")">@Html.ActionLink("Overview", "Overview", "User")</li>
+                                <li class="@Html.IsSelected(controller: "User", action: "Management")">@Html.ActionLink("Management", "Management", "User")</li>
+                            </ul>
+                        </li>
+
+                        <li class="@Html.IsSelected(action: "About")">@Html.ActionLink("About", "About", "Home")</li>
+                        <li class="@Html.IsSelected(action: "Contact")">@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <!-- Search Block -->
+                        <li>
+                            <i class="search fa fa-search search-btn"></i>
+                            <div class="search-open">
+                                <div class="input-group animated fadeInDown">
+                                    <input type="text" class="form-control" placeholder="Search">
+                                    <span class="input-group-btn">
+                                        <button class="btn-u" type="button">Go</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- End Search Block -->
+                    </ul>
+                </div><!--/end container-->
+            </div>
+            <!--/navbar-collapse-->
+        </div>
+        <!--=== End Header ===-->
+
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs breadcrumbs-dark">
+            @RenderSection("Breadcrumbs", false)
+        </div>
+        <!--=== End Breadcrumbs ===-->
+
+        <!--=== Content Part  ===-->
+        <div class="container content">
+            @RenderBody()
+        </div>
+        <!--/container-->
+        <!--=== End Content Part  ===-->
+
+        <!--=== Footer Version 1 ===-->
+        @Html.Partial("_Footer")
+        <!--=== End Footer Version 1 ===-->
+
+    </div>
+
+    <!-- JS Global Compulsory -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/assets/plugins/jquery/jquery.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/assets/plugins/jquery/jquery-migrate.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/assets/plugins/bootstrap/js/bootstrap.min.js")"></script>
+
+    <!-- JS Implementing Plugins -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/assets/plugins/back-to-top.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/assets/plugins/smoothScroll.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/assets/plugins/sky-forms-pro/skyforms/js/jquery.validate.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/assets/plugins/sky-forms-pro/skyforms/js/jquery.maskedinput.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/assets/plugins/sky-forms-pro/skyforms/js/jquery.form.min.js")"></script>
+
+    <!-- JS Customization -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/assets/js/custom.js")"></script>
+    <!-- JS Page Level -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/assets/js/app.js")"></script>
+
+    <!-- For Popup Angulajs + Bootstarp -->
+    <script src="@Url.Content("~/Scripts/angular.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/assets/js/bootbox.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/assets/js/ui-bootstrap-tpls-0.12.1.min.js")"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+
+    <!--[if lt IE 9]>
+        <script src="assets/plugins/respond.js"></script>
+        <script src="assets/plugins/html5shiv.js"></script>
+        <script src="assets/plugins/placeholder-IE-fixes.js"></script>
+        <script src="assets/plugins/sky-forms-pro/skyforms/js/sky-forms-ie8.js"></script>
+    <![endif]-->
+    <!--[if lt IE 10]>
+        <script src="assets/plugins/sky-forms-pro/skyforms/js/jquery.placeholder.min.js"></script>
+    <![endif]-->
+    
+</body>
+</html>

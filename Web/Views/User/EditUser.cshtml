@@ -1,0 +1,140 @@
+﻿@model eVisaWeb.Models.UserViewModels
+
+<!--=== Breadcrumbs ===-->
+@section Breadcrumbs{
+    <div class="container">
+        <h1 class="pull-left">User Management</h1>
+        <ul class="pull-right breadcrumb">
+            <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+            <li><a href="@Url.Action("Management", "User")">User</a></li>
+            <li><a href="@Url.Action("Management", "User")">Management</a></li>
+            <li class="active">Edit User</li>
+        </ul>
+    </div>
+}
+<!--=== End Breadcrumbs ===-->
+
+<section class="row">
+    <section class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <form id="addUserForm" class="sky-form" method="post" enctype="multipart/form-data" action="@Url.Action("UpdateUser", "User")">
+            <header>Edit User</header>
+
+            @Html.HiddenFor(u => u.ID)
+            <fieldset>
+                <section>
+                    <div class="row">
+                        <div>
+                            <img id="thumbnil" class="img-bordered img-center img-responsive profile-img margin-bottom-20" src="@Model.ImgUrl" alt="@Url.Content("~/Scripts/assets/img/team/img1-sm.jpg")">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="file" class="input input-file state-success">
+                            <div class="button"><input type="file" accept="image/*" name="file" onchange="this.parentNode.nextSibling.value = this.value; showMyImage(this)">Change Picture</div><input type="text" placeholder="User Image" readonly>
+                        </label>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="row">
+                        <label class="input col col-2">Name</label>
+                        <div class="col col-10">
+                            <label class="input">
+                                <i class="icon-append fa fa-user"></i>
+                                <input type="text" name="Name" value="@Model.Name">
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="row">
+                        <label class="input col col-2">Address</label>
+                        <label class="textarea col col-10">
+                            <textarea rows="4" name="Address">@Model.Address</textarea>
+                        </label>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="row">
+                        <label class="select col col-2">Status</label>
+                        <label class="select col col-10">
+                            <select name="status">
+                                <option value="Pending" @(@Model.Status == "Pending"? "selected" : "")>Pending</option>
+                                <option value="Success" @(@Model.Status == "Success" ? "selected" : "")>Success</option>
+                                <option value="Expiring" @(@Model.Status == "Expiring" ? "selected" : "")>Expiring</option>
+                                <option value="Error" @(@Model.Status == "Error" ? "selected" : "")>Error</option>
+                            </select>
+                            <i></i>
+                        </label>
+                    </div>
+                </section>
+            </fieldset>
+
+            <fieldset>
+                <section>
+                    <div class="row">
+                        <label class="input col col-2">E-mail</label>
+                        <div class="col col-10">
+                            <label class="input">
+                                <i class="icon-append fa fa-envelope-o"></i>
+                                <input type="email" name="Email" value="@Model.Email">
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="row">
+                        <label class="input col col-2">Website</label>
+                        <div class="col col-10">
+                            <label class="input">
+                                <i class="icon-append fa fa-globe"></i>
+                                <input type="url" name="Website" value="@Model.Website">
+                            </label>
+                        </div>
+                    </div>
+                </section>
+            </fieldset>
+            <footer class="text-right">
+                <a class="btn-u btn-u-default" href="@Url.Action("Management", "User")">Back</a>
+                <button type="submit" class="btn-u">OK</button>
+            </footer>
+        </form>
+        </div>
+</div>
+
+@section scripts{
+<script>
+    function showMyImage(fileInput) {
+        var files = fileInput.files;
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var imageType = /image.*/;
+            if (!file.type.match(imageType)) {
+                continue;
+            }
+            var img = document.getElementById("thumbnil");
+            img.file = file;
+            var reader = new FileReader();
+            reader.onload = (function (aImg) {
+                return function (e) {
+                    aImg.src = e.target.result;
+                };
+            })(img);
+            reader.readAsDataURL(file);
+        }
+    }
+
+    $("#addUserForm").validate({
+        rules: {
+            Name:{ required: true },
+            Email: { required: true, email: true }
+        },
+        // Do not change code below
+        errorPlacement: function (error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+</script>
+}

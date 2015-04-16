@@ -1,0 +1,304 @@
+﻿@model eVisaWeb.Models.UserManagementViewModels
+
+@{
+    ViewBag.Title = "Management";
+}
+
+<!-- CSS Page Style -->
+<link rel="stylesheet" href="@Url.Content("~/Scripts/assets/css/pages/page_search_inner_tables.css")">
+
+<!--=== Breadcrumbs ===-->
+@section Breadcrumbs{
+<div class="container">
+    <h1 class="pull-left">User Management</h1>
+    <ul class="pull-right breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="">User</a></li>
+        <li class="active">Management</li>
+    </ul>
+</div>
+}
+<!--=== End Breadcrumbs ===-->
+
+<div ng-controller="userManagementCtrl">
+
+    <!--=== Search Block Version 2 ===-->
+    <div class="search-block">
+        <div class="container">
+            <div class="col-md-6 col-md-offset-3">
+                <h2>Search again</h2>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search words with regular expressions ..."
+                           ng-model="query" ng-keypress="($event.which === 13)?search():0">
+                    <span class="input-group-btn">
+                        <a class="btn-u" type="button" ng-click="search()"><i class="fa fa-search"></i></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div><!--/container-->
+
+    <!--=== End Search Block Version 2 ===-->
+
+    <div class="container">
+
+        <button class="btn-u btn-u-blue margin-bottom-5" type="button" ng-click="newUser()"> <i class="glyphicon glyphicon-plus"></i> Add User</button>
+
+        <!-- Begin Table Search Panel v2 -->
+        <div class="table-search-v2 panel panel-dark margin-bottom-5">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-globe"></i> Table Search Results</h3> 
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-sm-1">User Image</th>
+                            <th class="hidden-sm col-sm-5">About</th>
+                            <th class="col-sm-1">Status</th>
+                            <th class="col-sm-2">Contacts</th>
+                            <th class="col-sm-2">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="user in users">
+                            <td>
+                                <img class="rounded-x" src="{{user.ImgUrl}}" alt="">
+                            </td>
+                            <td>
+                                <h3><a href="#">{{user.Name}}</a></h3>
+                                <p>{{user.Address}}</p>
+                                <small class="hex">Joined {{user.JoinedDate}}</small>
+                            </td>
+                            <td>
+                                <span highlight="{{user.Status}}">{{user.Status}}</span>
+                            </td>
+                            <td>
+                                <ul class="list-inline s-icons">
+                                    <li>
+                                        <a data-placement="top" data-toggle="tooltip" class="tooltips" data-original-title="Facebook" href="#">
+                                            <i class="fa fa-facebook"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-placement="top" data-toggle="tooltip" class="tooltips" data-original-title="Twitter" href="#">
+                                            <i class="fa fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-placement="top" data-toggle="tooltip" class="tooltips" data-original-title="Dropbox" href="#">
+                                            <i class="fa fa-dropbox"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-placement="top" data-toggle="tooltip" class="tooltips" data-original-title="Linkedin" href="#">
+                                            <i class="fa fa-linkedin"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <span><a href="#">{{user.Email}}</a></span>
+                                <span><a href="#">{{user.WebSite}}</a></span>
+                            </td>
+                            <td>
+                                <ul class="list-inline table-buttons">
+                                    <li><button type="button" class="btn-u btn-u-sm btn-u-dark" ng-click="confirmDelete(user.ID)"><i class="fa fa-trash-o"></i></button></li>
+                                    <li><button type="button" class="btn-u btn-u-sm btn-u-dark" ng-click="editUser(user.ID)"><i class="fa fa-edit"></i></button></li>
+                                    <li><button type="button" class="btn-u btn-u-sm btn-u-dark"><i class="fa fa-print"></i></button></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-md-6 text-left">
+                <ul class="pagination">
+                    @if (Model.Page > 1)
+                    {
+                        <li>
+                            <a href="@Url.Action("Management", "User", new
+                                 {
+                                     start = 0,
+                                     page = 1,
+                                     query = Model.Query,
+                                 })">«</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Management", "User", new
+                                     {
+                                         start = (Model.Page - 2) * Model.Limit,
+                                         page = Model.Page - 1,
+                                         query = Model.Query,
+                                     })"><</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li><a href="#"><<</a></li>
+                        <li><a href="#"><</a></li>
+                    }
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        var link = Url.Action("Management", "User", new
+                        {
+                            start = (i - 1) * Model.Limit,
+                            page = i,
+                            query = Model.Query,
+                        });
+
+                        if (i == Model.Page)
+                        {
+                            <text>
+                                <li class="active"><a href="@link">@i</a></li>
+                            </text>
+                        }
+                        else
+                        {
+                            <text>
+                                <li><a href="@link">@i</a></li>
+                            </text>
+                        }
+                    }
+
+                    @if (Model.Page < Model.TotalPages)
+                    {
+                        <li>
+                            <a href="@Url.Action("Management", "User", new
+                                     {
+                                         start = (Model.Page) * Model.Limit,
+                                         page = Model.Page + 1,
+                                         query = Model.Query,
+                                     })">></a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Management", "User", new
+                                                 {
+                                                     start = (Model.TotalPages - 1) * Model.Limit,
+                                                     page = Model.TotalPages,
+                                                     query = Model.Query,
+                                                 }
+                                       )">»</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li><a href="#">></a></li>
+                        <li><a href="#">>></a></li>
+                    }
+                </ul>
+            </div>
+            <div class="col col-md-6 text-right margin-top-20">
+                Page: <span class="badge">@(Model.Page)</span> of <span class="badge">@( Model.TotalPages)</span> |  Users displaying <span class="badge">@( Model.DisplayFrom)</span> - <span class="badge">@( Model.DisplayTo)</span> of <span class="badge">@( Model.Total)</span>
+            </div>
+        </div>
+
+        <!-- End Table Search Panel v2 -->
+    </div>
+
+</div>
+
+@section scripts{
+    <script>
+    var userSearchUserAction = "@Url.Action("SearchUser", "User")",
+        userDeleteAction = "@Url.Action("DeleteUser", "User")";
+
+    angular.module("eVisa.Directives", [])
+        .directive("highlight", function ($filter) {
+            return function (scope, element, attrs) {
+                if ("Expiring" == attrs["highlight"]) element.attr("class", "label label-warning");
+                if ("Error" == attrs["highlight"]) element.attr("class", "label label-danger");
+                if ("Success" == attrs["highlight"]) element.attr("class", "label label-success");
+                if ("Pending" == attrs["highlight"]) element.attr("class", "label label-info");
+            }
+        });
+
+    var users = [];
+    @foreach (var u in Model.UserViewModelsList)
+	{
+<text>
+    users.push({
+        ID: @u.ID,
+        ImgUrl: "@u.ImgUrl",
+        Name: "@u.Name",
+        Address: "@u.Address",
+        JoinedDate: "@u.JoinedDate",
+        Status: "@u.Status",
+        Email: "@u.Email",
+        Website: "@u.Website",
+    });
+</text>
+	}
+    angular.module("main", ["eVisa.Directives"])
+        .controller("userManagementCtrl", function ($scope, $http, $location) {
+            //console.log(userSearchUserAction);
+            $scope.query = "@Model.Query";
+            $scope.users = users;
+
+            $scope.search = function () {
+                window.location = "@Url.Action("Management", "User")" + "?query=" + $scope.query;
+                //console.log($scope.query);
+                //$http({
+                //    method: "GET",
+                //    url: userSearchUserAction,
+                //    params: {
+                //        query: $scope.query,
+                //        start: 0,
+                //        limit: 10
+                //    }
+                //}).
+                //success(function (response, status, headers, config) {
+                //    $scope.users = response.data;
+                //}).
+                //error(function (response, status, headers, config) {
+                //    // called asynchronously if an error occurs
+                //    // or server returns response with an error status.
+                //});
+            }
+
+            $scope.confirmDelete = function (id) {
+                bootbox.dialog({
+                    title: "Confirm!",
+                    message: "Are you sure that you wish to delete User ID: " + id + "?",
+                    buttons: {
+                        danger: {
+                            label: "Cancel",
+                            className: "btn-u btn-u-default",
+                            callback: function () {
+                            }
+                        },
+                        success: {
+                            label: "OK",
+                            className: "btn-u btn-u-success",
+                            callback: function () {
+                                $http({
+                                    method: "POST",
+                                    url: userDeleteAction,
+                                    params: {
+                                        id: id
+                                    }
+                                }).
+                                success(function (response, status, headers, config) {
+                                    //$scope.search();
+                                    //$location.path("/User/Management");
+                                    window.location = "@Url.Action("Management", "User")";
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+
+            //$scope.search();
+
+            $scope.newUser = function () {
+                window.location = "@Url.Action("AddUser", "User")";
+            }
+
+            $scope.editUser = function (id) {
+                window.location = "@Url.Action("EditUser", "User")" + "?id=" + id;
+            }
+        });
+
+    </script>
+}
